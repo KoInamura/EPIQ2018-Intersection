@@ -138,7 +138,12 @@ boolean endHandled = false
             MoveCamLeft()
         elseif e:keyCode = e:S
             MoveCamBack()
+        elseif e:keyCode = e:Q
+            MoveCamUp()
+        elseif e:keyCode = e:E
+            MoveCamDown()
         end
+        
     end
 
     action ReleasedKey(KeyboardEvent e)
@@ -157,6 +162,10 @@ boolean endHandled = false
         elseif e:keyCode = e:A
             StopCam()
         elseif e:keyCode = e:S
+            StopCam()
+        elseif e:keyCode = e:Q
+            StopCam()
+        elseif e:keyCode = e:E
             StopCam()
         end
     end
@@ -191,7 +200,21 @@ boolean endHandled = false
         velocityZ = -speed 
     end
 
-////////////
+    
+
+////////////Camera actions 
+
+    action MoveCamUp()
+        camvelX = 0
+        camvelY = speed
+        camvelZ = 0
+    end
+
+    action MoveCamDown()
+        camvelX = 0
+        camvelY = -speed
+        camvelZ = 0
+    end
 
     action MoveCamForward() 
         camvelX = 0
