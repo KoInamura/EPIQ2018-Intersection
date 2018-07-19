@@ -196,9 +196,9 @@ boolean endHandled = false
             MoveCamUp()
         elseif e:keyCode = e:E
             MoveCamDown()
-         elseif e:keyCode = e:NUM_1
+         elseif e:keyCode = e:NUM_2
             YawUp()
-        elseif e:keyCode = e:NUM_2
+        elseif e:keyCode = e:NUM_1
             YawDown()
         elseif e:keyCode = e:NUM_3
             PitchRight()
