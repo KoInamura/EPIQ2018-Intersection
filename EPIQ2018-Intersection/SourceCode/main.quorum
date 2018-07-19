@@ -27,6 +27,7 @@ class Main is Game, KeyboardListener
 
     Color color
     Random ran
+    
 
     // The speed of the character when he moves
     number speed = 30
@@ -147,7 +148,10 @@ boolean endHandled = false
      // Moves the character every update depending on the values of the 3 fields
         diver:Move(velocityX*seconds, velocityY*seconds, velocityZ*seconds)
 
+    //Moves the camera 
         camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
+
+        
 
 
     // Moves the camera according to the character position
@@ -178,7 +182,15 @@ boolean endHandled = false
             MoveCamUp()
         elseif e:keyCode = e:E
             MoveCamDown()
+         elseif e:keyCode = e:NUM_1
+            RotaD()
+            //camera:Rotate(180, 0, 0, 1)
+        elseif e:keyCode = e:NUM_2
+            RotaU()
+        elseif e:keyCode = e:SPACE
+            CamReturn()
         end
+        
         
     end
 
@@ -203,6 +215,7 @@ boolean endHandled = false
             StopCam()
         elseif e:keyCode = e:E
             StopCam()
+       
         end
     end
 
@@ -282,6 +295,19 @@ boolean endHandled = false
         camvelX = 0
         camvelY = 0
         camvelZ = -speed 
+    end
+
+    action RotaD
+        camera:Rotate(180, 0, 0, 1)
+            
+    end
+
+    action RotaU
+        camera:Rotate(-180, 0, 0, 1)
+    end
+    
+    action CamReturn
+        camera:LookAt(0, 0, 1000000)
     end
 
 
