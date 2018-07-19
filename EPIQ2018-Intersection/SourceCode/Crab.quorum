@@ -1,0 +1,100 @@
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Graphics.Color
+use Libraries.Compute.Math
+use Libraries.Compute.Vector3
+use Libraries.Game.Graphics.PointLight
+use Libraries.Game.Audio3D
+use Libraries.Game.Graphics.Drawable
+use Libraries.Compute.Random
+
+class Crab is Model 
+PointLight characterLight
+Audio3D audio
+Wall leftWall
+Wall rightWall
+Math math
+Random random
+integer speed = 50
+integer direction = 1 // 1 means right and -1 means left
+
+boolean colorFlip = true
+number oldR = 0
+number oldG = 0
+number oldB = 0
+
+action GetLeftWall() returns Wall
+return leftWall
+end
+
+action GetRightWall() returns Wall
+return rightWall
+end
+
+action SetLeftWall(Wall wall)
+leftWall = wall
+end
+
+action SetRightWall(Wall wall)
+rightWall = wall
+end
+
+action SpawnRandomly()
+        SetPosition(random:RandomIntegerBetween(cast(integer, leftWall:GetRightEdge()), cast(integer, rightWall:GetLeftEdge())), 10, random:RandomIntegerBetween(cast(integer, leftWall:GetFrontEdge()), cast(integer, rightWall:GetBackEdge())))
+end
+
+    action LoadCrab(number width, number height, number depth, Wall leftWall, Wall rightWall)
+        //Load a model to represent our character
+        //Give our character an initial position
+        
+        me:leftWall = leftWall
+        me:rightWall = rightWall
+Drawable crab
+        crab:Load("crab.png")
+        LoadCylinder(width, height, depth, crab)
+        SetDescription("Crab")
+
+        //Set our point lights s color, position, and intensity 
+Color characterLightColor
+        characterLightColor:SetColor(0.98, 0.98, 0.82, 1)
+        characterLight:SetColor(characterLightColor)
+        characterLight:SetIntensity(50)
+        Add(characterLight)
+
+        SpawnRandomly()
+
+        audio:Load("crab.wav")
+        audio:EnableLooping()
+        audio:Play()
+        Add(audio)
+    end
+
+    action Update(number seconds)
+        Move(direction*speed*seconds, 0, 0)
+
+//output("crab X: "+GetPosition():GetX())
+//output("Left Wall X: "+leftWall:GetPosition():GetX())
+//output("Right Wall X: "+rightWall:GetPosition():GetX())
+
+            if math:AbsoluteValue(GetPosition():GetX()-leftWall:GetPosition():GetX()-(leftWall:GetWidth()/2.0)) < 1.0 or math:AbsoluteValue(GetPosition():GetX() - rightWall:GetPosition():GetX()+(rightWall:GetWidth()/2.0)) < 1.0
+                direction = direction * -1 // flip the direction
+        SpawnRandomly()
+            end
+
+Color c = characterLight:GetColor()
+r = c:GetRed()
+g = c:GetGreen()
+b = c:GetBlue()
+
+if colorFlip
+oldR = r
+oldG = b
+oldB = b
+characterLight:SetColor(r-0.5, g-0.5, b-0.5, 0.9)
+else
+characterLight:SetColor(oldR, oldG, oldB, 0.9)
+end
+
+colorFlip = not colorFlip
+
+    end
+end

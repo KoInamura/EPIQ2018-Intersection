@@ -1,0 +1,37 @@
+use Libraries.Game.Graphics.Color
+use Libraries.Game.Graphics.PointLight
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Graphics.Drawable
+use Libraries.Game.Audio3D
+
+
+class PokemonGoer is Model
+Color PointLightColor
+PointLight characterLight
+Audio3D audio
+
+    action LoadPokemonGoer(boolean female)
+Drawable pokemonpic
+if female
+        pokemonpic:Load("pokemonGoer1.png")
+else
+        pokemonpic:Load("pokemonGoer2.png")
+end
+        LoadBox(10,20,5, pokemonpic)
+        SetDescription("A person playing pokemon Go")
+
+        PointLightColor:SetColor(0.98, 0.98, 0.82, 1)
+        characterLight:SetColor(PointLightColor)
+        characterLight:SetIntensity(50)
+        characterLight:SetPosition(0, 5, -5)
+        Add(characterLight)
+
+if female
+        audio:Load("Jigglypuff.wav")
+        audio:EnableLooping()
+        audio:Play()
+        Add(audio)
+end
+        
+    end
+end

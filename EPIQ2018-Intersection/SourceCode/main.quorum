@@ -1,0 +1,337 @@
+use Libraries.Game.Game
+use Libraries.Game.Graphics.Camera
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Graphics.Color
+use Libraries.Compute.Vector3
+use Libraries.Game.Graphics.AmbientLight
+use Libraries.Game.Graphics.PointLight
+use Libraries.Game.Graphics.DirectionalLight
+use Libraries.Game.Audio3D
+use Libraries.Game.Graphics.Drawable
+use Libraries.Game.Graphics.Camera
+use Libraries.Game.Layer2D
+use Libraries.Game.Graphics.PerspectiveCamera
+use Libraries.Interface.Events.KeyboardListener
+use Libraries.Interface.Events.KeyboardEvent
+use Libraries.Compute.Random
+
+
+class Main is Game, KeyboardListener
+    PerspectiveCamera camera = undefined
+    Model ground
+   
+    Model head
+    Model ship1
+
+    Model diver 
+    Model blockbody
+    Model blockhead
+    Model blockhead2
+    Model blockbody2 
+
+Model pair
+    
+    Drawable drawship 
+    Drawable drawbody
+    Drawable drawhead 
+    Drawable drawbody2
+    Drawable drawhead2 
+                
+    Drawable grass
+    Drawable background
+    Drawable helmet
+
+    Random ran
+
+    PokemonGoer pokemonGoer1
+    PokemonGoer pokemonGoer2
+
+    TargetKo ko
+
+    // The speed of the character when he moves
+    number speed = 30
+
+    // These are the values that we will use to move the character
+    number velocityX = 0
+    number velocityY= 0
+    number velocityZ = 0
+
+boolean endHandled = false
+   
+    action Main
+        StartGame()
+    end
+
+   
+    action CreateGame
+        
+        
+
+        AmbientLight ambient
+        ambient:SetColor(0.3, 0.3, 0.3, 1)
+        SetAmbientLight(ambient)
+
+        DirectionalLight light
+        light:SetColor(0, 0.3, 0.4, 1)
+        light:SetDirection(0.2, -0.8, 0.8)
+        Add(light)
+
+        PointLight pointLight
+
+        camera = cast(PerspectiveCamera,GetCamera3D())
+        camera:SetPosition(0, 40, -550)
+        camera:LookAt(0, 2, 0) 
+        camera:SetUp(0,1,0)
+
+        Layer2D layer
+        AddLayer(0, layer)
+        background:Load("OceanBottom.png")
+        layer:Add(background)
+
+        grass:Load("GrassField1.jpg")
+        ground:LoadBox(1000, 2, 1000, grass)
+        Add(ground)
+        
+        diver:Load("man.g3db") // load the g3db model
+        diver:Scale(0.008, 0.008, 0.008)
+        diver:SetPosition(8, 4, -500)
+        diver:Rotate(0, 1, 0, 90)
+        Add(diver)
+
+        helmet:Load("diving-helmet.jpg")					
+        head:LoadSphere(2, 2, 2, helmet)
+        head:Rotate(0, 1, 0, 90)
+        head:SetPosition(0, 4, 0)
+        diver:Add(head)
+
+        drawbody:Load("body.png")
+        blockbody:LoadBox(5, 5, 5, drawbody)
+        //blockbody:Rotate(0, 1, 0, 90)
+        blockbody:SetPosition(-5, 5, -475)
+        Add(blockbody)
+
+        drawhead:Load("blockhead.png")
+        blockhead:LoadSphere(5, 5, 5, drawhead)
+        blockhead:SetPosition(0, 5, 0)
+        blockhead:Rotate(0, 1, 0, 90)
+        blockbody:Add(blockhead)
+
+        drawbody2:Load("body.png")
+        blockbody2:LoadBox(5, 5, 5, drawbody2)
+        //blockbody:Rotate(0, 1, 0, 90)
+        blockbody2:SetPosition(22, 5, -475)
+        Add(blockbody2)
+
+        drawhead2:Load("blockhead.png")
+        blockhead2:LoadSphere(5, 5, 5, drawhead2)
+        blockhead2:SetPosition(0, 5, 0)
+        blockhead2:Rotate(0, 1, 0, 90)
+        blockbody2:Add(blockhead2)
+
+        drawship:Load("shipwreck.png")
+        ship1:LoadBox(100, 100, 100, drawship)
+        ship1:Rotate(0, 1, 0, 45)
+        ship1:SetPosition(-100, 48, 15)
+        Add(ship1) 
+
+        
+        pointLight:SetColor(1, 1, 1, 1)
+        pointLight:SetPosition(0, 3, 0)
+        pointLight:SetIntensity(20)
+        diver:Add(pointLight)
+
+        Rock rock1
+        rock1:SetPosition(-125, 10, -375)
+        Add(rock1)
+        
+        Rock rock2
+        rock2:SetPosition(150, 10, -75)
+        Add(rock2)
+
+        Rock rock3
+        rock3:SetPosition(-1, 10, -5)
+        Add(rock3)
+
+        Rock rock4
+        rock4:SetPosition(-80, 10, 275)
+        Add(rock4)
+
+        Rock rock5
+        rock5:SetPosition(10, 10, -200)
+        Add(rock5)
+
+        Rock rock6
+        rock6:SetPosition(10, 10, -375)
+        Add(rock6)
+
+        Rock rock7
+        rock7:SetPosition(40, 10, 200)
+        Add(rock7)
+        
+        Rock rock8
+        rock8:SetPosition(100, 10, 50)
+        Add(rock8)
+
+        Rock rock9
+        rock9:SetPosition(50, 10, 100)
+        Add(rock9)
+
+        Rock rock10
+        rock10:SetPosition(-175, 10, 300)
+        Add(rock10)
+        
+        Color wallColor // todo: load this up with a meaningful color
+        wallColor = wallColor:Yellow()
+
+        Wall firstWall
+        firstWall:LoadWall(10, 20, 230)
+        firstWall:SetPosition(-15,2,-370)
+        Add(firstWall)
+
+        Wall secondWall
+        secondWall:LoadWall(10, 20, 130)
+        secondWall:SetPosition(40,2,-400)
+        Add(secondWall)
+        
+        Crab crab2
+        crab2:LoadCrab(10, 10, 20, firstWall, secondWall) // fill in a width, height, and depth (no need to provide position b/c magic!)
+
+        //create far edges with crabs
+
+        Wall leftEdgeWall
+        leftEdgeWall:LoadWall(10, 20, 800)
+        leftEdgeWall:SetPosition(-400,2,-100)
+        Add(leftEdgeWall)
+
+        Wall rightEdgeWall
+        rightEdgeWall:LoadWall(10, 20, 800)
+        rightEdgeWall:SetPosition(200,2,-100)
+        Add(rightEdgeWall)
+        
+        Crab crab1
+        crab1:LoadCrab(10, 10, 20, leftEdgeWall, rightEdgeWall) // fill in a width, height, and depth (no need to provide position b/c magic!)
+
+        Add(leftEdgeWall)
+        Add(rightEdgeWall)
+        Add(crab1)
+
+        //Continue building walls
+
+        Wall thirdWall
+        thirdWall:LoadWall(100, 20, 10)
+        thirdWall:SetPosition(80,2,-330)
+        Add(thirdWall) 
+       
+       Wall fourthWall
+        fourthWall:LoadWall(10, 20, 280)
+        fourthWall:SetPosition(130,2,-200)
+        Add(fourthWall)
+
+        Wall fifthWall
+        fifthWall:LoadWall(280, 20, 10)
+        fifthWall:SetPosition(-150,2, -245)
+        Add(fifthWall)
+
+        Wall sixthWall
+        sixthWall:LoadWall(280, 20, 10)
+        sixthWall:SetPosition(-10,2, -60)
+        Add(sixthWall)
+
+//        Wall seventhWall
+//        seventhWall:LoadWall(10, 20, 280, wallColor)
+//        seventhWall:SetPosition(-300,2,-150)
+//        Add(seventhWall)
+
+        Wall eighthWall
+        eighthWall:LoadWall(300, 20, 10)
+        eighthWall:SetPosition(-200,2, 120)
+        Add(eighthWall)
+
+        pokemonGoer1:LoadPokemonGoer(false)
+        pokemonGoer1:SetPosition(40, 10, 310)
+        Add(pokemonGoer1)
+        
+        //This is the female
+        pokemonGoer2:LoadPokemonGoer(true)
+        pokemonGoer2:SetPosition(50, 10, -280)
+        Add(pokemonGoer2)
+
+        ko:LoadKo()
+        Add(ko)
+
+        // Add a keyboardListener to move the character
+        AddKeyboardListener(me)
+
+    end
+
+    
+    action Update(number seconds)
+
+     // Moves the character every update depending on the values of the 3 fields
+        diver:Move(velocityX*seconds, velocityY*seconds, velocityZ*seconds)
+
+        // Moves the camera according to the character position
+       // camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
+       //first person //camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())
+       camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)
+
+if not endHandled and diver:GetGlobalPosition():Distance(ko:GetGlobalPosition()) < 10.0
+endHandled = true
+pair:Add(diver)
+pair:Add(ko)
+Remove(diver)
+Remove(ko)
+Add(pair)
+elseif endHandled
+pair:Scale(1.02, 1.0125, 1.015)
+pair:Rotate(0, 1, 0, 6)
+end
+    end
+    
+    action PressedKey(KeyboardEvent e)
+        if e:keyCode = e:UP
+            MoveForward()
+        elseif e:keyCode = e:LEFT
+            MoveLeft()
+        elseif e:keyCode = e:RIGHT
+            MoveRight()
+        elseif e:keyCode = e:DOWN
+            MoveBack()
+        end
+    end
+
+    action ReleasedKey(KeyboardEvent e)
+        StopCharacter()
+    end
+
+    action MoveForward() 
+        velocityX = 0
+        velocityY = 0
+        velocityZ = speed
+    end
+
+    action StopCharacter()
+        velocityX = 0      
+        velocityY = 0
+        velocityZ = 0
+    end
+
+    action MoveLeft
+        velocityX = -speed
+        velocityY = 0
+        velocityZ = 0 
+    end 
+
+    action MoveRight
+        velocityX = speed
+        velocityY = 0
+        velocityZ = 0 
+    end 
+
+    action MoveBack
+        velocityX = 0
+        velocityY = 0
+        velocityZ = -speed 
+    end
+
+end

@@ -1,0 +1,47 @@
+use Libraries.Game.Graphics.Camera
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Graphics.Color
+use Libraries.Compute.Vector3
+use Libraries.Game.Graphics.AmbientLight
+use Libraries.Game.Graphics.PointLight
+use Libraries.Game.Graphics.DirectionalLight
+use Libraries.Game.Audio3D
+use Libraries.Game.Graphics.Drawable
+use Libraries.Game.Graphics.Camera
+use Libraries.Game.Layer2D
+use Libraries.Game.Graphics.PerspectiveCamera
+use Libraries.Interface.Events.KeyboardListener
+use Libraries.Interface.Events.KeyboardEvent
+use Libraries.Compute.Random
+
+class TargetKo is Model
+    Drawable koAppearance
+    Drawable pokeScreen
+
+    Color PointLightColor
+    PointLight characterLight
+    Model iPhone
+
+    action LoadKo
+        koAppearance:Load("ko.JPG")
+
+        me:LoadBox(5, 7, 5, koAppearance)
+        SetPosition(10, 10, 400)
+        me:Rotate(0, 1, 0, 90)
+
+        PointLightColor:SetColor(0.98, 0.98, 0.82, 1)
+        characterLight:SetColor(PointLightColor)
+        characterLight:SetIntensity(750)
+        characterLight:SetPosition(1, 0, 0)
+
+        me:Add(characterLight)
+
+        pokeScreen:Load("IMG_1663.PNG")
+        iPhone:LoadBox(3, 0.5, 5, pokeScreen)
+        iPhone:SetPosition(4, 4, 0)
+        iPhone:Rotate(1, 0, 0, 60)
+        iPhone:Add(characterLight)
+        me:Add(iPhone)
+        
+    end
+end

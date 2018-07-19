@@ -1,0 +1,47 @@
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Audio3D
+use Libraries.Game.Graphics.Drawable
+
+class Rock is Model
+Audio3D audio
+
+on create
+LoadRock()
+end
+
+    action LoadRock()
+        Drawable rock
+        rock:Load("Rock1.png")
+        LoadBox(20, 20, 20, rock)
+        SetDescription("Rock")
+
+        audio:Load("rock.wav")
+        audio:EnableLooping()
+        audio:Play()
+        Add(audio)
+    end
+
+action GetLeftEdge() returns number
+return GetGlobalPosition():GetX()-(GetWidth()/2.0)
+end
+
+action GetRightEdge() returns number
+return GetGlobalPosition():GetX()+(GetWidth()/2.0)
+end
+
+action GetTopEdge() returns number
+return GetGlobalPosition():GetY()+(GetHeight()/2.0)
+end
+
+action GetFrontEdge() returns number
+return GetGlobalPosition():GetZ()-(GetDepth()/2.0)
+end
+
+action GetBackEdge() returns number
+return GetGlobalPosition():GetZ()+(GetDepth()/2.0)
+end
+
+    action Update(number seconds)
+         
+    end
+end

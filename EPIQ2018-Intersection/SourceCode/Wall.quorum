@@ -1,0 +1,50 @@
+use Libraries.Game.Graphics.Model
+use Libraries.Game.Graphics.Color
+use Libraries.Compute.Vector3
+use Libraries.Game.Graphics.PointLight
+use Libraries.Game.Audio3D
+use Libraries.Game.Graphics.Drawable
+use Libraries.Compute.Random
+use Libraries.Game.Graphics.Drawable
+
+class Wall is Model
+Audio3D audio
+Drawable texture
+    action LoadWall(number width, number height, number depth)
+//Drawable wall
+//        wall:Load("crab.png")
+        texture:Load("brick.jpg")
+        LoadBox(width, height, depth, texture) // if we texture the wall, we can uncomment the top two lines and add in a ", wall" into the LoadBox action
+        
+        SetDescription("Wall")
+
+        audio:Load("wall.wav")
+        audio:EnableLooping()
+        audio:Play()
+        Add(audio)
+    end
+
+action GetLeftEdge() returns number
+return GetGlobalPosition():GetX()-(GetWidth()/2.0)
+end
+
+action GetRightEdge() returns number
+return GetGlobalPosition():GetX()+(GetWidth()/2.0)
+end
+
+action GetTopEdge() returns number
+return GetGlobalPosition():GetY()+(GetHeight()/2.0)
+end
+
+action GetFrontEdge() returns number
+return GetGlobalPosition():GetZ()-(GetDepth()/2.0)
+end
+
+action GetBackEdge() returns number
+return GetGlobalPosition():GetZ()+(GetDepth()/2.0)
+end
+
+    action Update(number seconds)
+         
+    end
+end
