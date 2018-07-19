@@ -56,6 +56,14 @@ Model pair
     number velocityY= 0
     number velocityZ = 0
 
+    //try to get camera to move
+    number camvelX = 0
+    number camvelY = 0
+    number camvelZ = 0
+
+    //speed of camera
+    number camspeed = 30
+
 boolean endHandled = false
    
     action Main
@@ -270,10 +278,13 @@ boolean endHandled = false
      // Moves the character every update depending on the values of the 3 fields
         diver:Move(velocityX*seconds, velocityY*seconds, velocityZ*seconds)
 
+        camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
+
+
         // Moves the camera according to the character position
-       // camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
-       //first person //camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())
-       camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)
+    //   camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
+  //1ST PERSON//     camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())   //FIRST PERSON
+ //ATTACH TO CHAR// camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)  //ATTACH TO CHAR//
 
 if not endHandled and diver:GetGlobalPosition():Distance(ko:GetGlobalPosition()) < 10.0
 endHandled = true
@@ -297,11 +308,35 @@ end
             MoveRight()
         elseif e:keyCode = e:DOWN
             MoveBack()
+        elseif e:keyCode = e:W
+            MoveCamForward()
+        elseif e:keyCode = e:D
+            MoveCamRight()
+        elseif e:keyCode = e:A
+            MoveCamLeft()
+        elseif e:keyCode = e:S
+            MoveCamBack()
         end
     end
 
     action ReleasedKey(KeyboardEvent e)
-        StopCharacter()
+          if e:keyCode = e:UP
+            StopCharacter()
+        elseif e:keyCode = e:LEFT
+            StopCharacter()
+        elseif e:keyCode = e:RIGHT
+            StopCharacter()
+        elseif e:keyCode = e:DOWN
+            StopCharacter()
+        elseif e:keyCode = e:W
+            StopCam()
+        elseif e:keyCode = e:D
+            StopCam()
+        elseif e:keyCode = e:A
+            StopCam()
+        elseif e:keyCode = e:S
+            StopCam()
+        end
     end
 
     action MoveForward() 
@@ -333,5 +368,40 @@ end
         velocityY = 0
         velocityZ = -speed 
     end
+
+////////////
+
+    action MoveCamForward() 
+        camvelX = 0
+        camvelY = 0
+        camvelZ = speed
+    end
+
+    action StopCam()
+        camvelX = 0      
+        camvelY = 0
+        camvelZ = 0
+    end
+
+    action MoveCamLeft
+        camvelX = -speed
+        camvelY = 0
+        camvelZ = 0 
+    end 
+
+    action MoveCamRight
+        camvelX = speed
+        camvelY = 0
+        camvelZ = 0 
+    end 
+
+    action MoveCamBack
+        camvelX = 0
+        camvelY = 0
+        camvelZ = -speed 
+    end
+
+
+/////////////
 
 end
