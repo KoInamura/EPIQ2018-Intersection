@@ -94,19 +94,54 @@ boolean endHandled = false
         Add(roadEW)
 
         Model cLineNSS
-        SetCenterLine(cLineNSS, 3, 4, 400, 0, 0, -300, color:Yellow())
+        SetLine(cLineNSS, 3, 4, 400, 0, 0, -300, color:Yellow())
         Model cLineNSN
-        SetCenterLine(cLineNSN, 3, 4, 400, 0, 0, 300, color:Yellow())
+        SetLine(cLineNSN, 3, 4, 400, 0, 0, 300, color:Yellow())
         Model cLineEWW
-        SetCenterLine(cLineEWW, 400, 4, 3, -300, 0, 0, color:Yellow())
+        SetLine(cLineEWW, 400, 4, 3, -300, 0, 0, color:Yellow())
         Model cLineEWE
-        SetCenterLine(cLineEWE, 400, 4, 3, 300, 0, 0, color:Yellow())
+        SetLine(cLineEWE, 400, 4, 3, 300, 0, 0, color:Yellow())
+
+        Model sidewalkSW1
+        SetLine(sidewalkSW1, 10, 4, 450, -55, 0, -275, color:LightGray())
+        Model sidewalkSE1
+        SetLine(sidewalkSE1, 10, 4, 450, 55, 0, -275, color:LightGray())
+        Model sidewalkNW1
+        SetLine(sidewalkNW1, 10, 4, 450, -55, 0, 275, color:LightGray())
+        Model sidewalkNE1
+        SetLine(sidewalkNE1, 10, 4, 450, 55, 0, 275, color:LightGray())
+
+        Model sidewalkSW2
+        SetLine(sidewalkSW2, 450, 4, 10, -275, 0, -55, color:LightGray())
+        Model sidewalkSE2
+        SetLine(sidewalkSE2, 450, 4, 10, 275, 0, -55, color:LightGray())
+        Model sidewalkNW2
+        SetLine(sidewalkNW2, 450, 4, 10, -275, 0, 55, color:LightGray())
+        Model sidewalkNE2
+        SetLine(sidewalkNE2, 450, 4, 10, 275, 0, 55, color:LightGray())
+
+        Model cwS1
+        SetLine(cwS1, 100, 4, 3, 0, 0, -99, color:White())
+        Model cwS2
+        SetLine(cwS2, 100, 4, 3, 0, 0, -51, color:White())
+        Model cwN1
+        SetLine(cwN1, 100, 4, 3, 0, 0, 51, color:White())
+        Model cwN2
+        SetLine(cwN2, 100, 4, 3, 0, 0, 99, color:White())
+
+        Model cwW1
+        SetLine(cwW1, 3, 4, 100, -99, 0, 0, color:White())
+        Model cwW2
+        SetLine(cwW2, 3, 4, 100, -51, 0, 0, color:White())
+        Model cwE1
+        SetLine(cwE1, 3, 4, 100, 51, 0, 0, color:White())
+        Model cwE2
+        SetLine(cwE2, 3, 4, 100, 99, 0, 0, color:White())
 
         // Add a keyboardListener to move the character
         AddKeyboardListener(me)
     end
 
-    
     action Update(number seconds)
 
      // Moves the character every update depending on the values of the 3 fields
@@ -253,7 +288,7 @@ boolean endHandled = false
 /////////////
 
     // Creating cation for drawing center lnes
-    action SetCenterLine(Model object, number width, number height, number depth, number positionX, number positionY, number positionZ, Color color)       
+    action SetLine(Model object, number width, number height, number depth, number positionX, number positionY, number positionZ, Color color)       
         object:LoadBox(width, height, depth, color)
         object:SetPosition(positionX, positionY, positionZ)
         Add(object)
