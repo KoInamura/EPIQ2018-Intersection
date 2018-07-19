@@ -94,13 +94,14 @@ boolean endHandled = false
         Add(roadEW)
 
         Model cLineNSS
-        cLineNSS:LoadBox(5, 4, 450, color:Yellow())
-        cLineNSS:SetPosition(0, 0, -275)
-        Add(cLineNSS)
-
+        SetCenterLine(cLineNSS, 3, 4, 400, 0, 0, -300, color:Yellow())
         Model cLineNSN
+        SetCenterLine(cLineNSN, 3, 4, 400, 0, 0, 300, color:Yellow())
         Model cLineEWW
+        SetCenterLine(cLineEWW, 400, 4, 3, -300, 0, 0, color:Yellow())
         Model cLineEWE
+        SetCenterLine(cLineEWE, 400, 4, 3, 300, 0, 0, color:Yellow())
+
         // Add a keyboardListener to move the character
         AddKeyboardListener(me)
     end
@@ -114,10 +115,10 @@ boolean endHandled = false
         camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
 
 
-        // Moves the camera according to the character position
+    // Moves the camera according to the character position
     //   camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
-  //1ST PERSON//     camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())   //FIRST PERSON
- //ATTACH TO CHAR// camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)  //ATTACH TO CHAR//
+    //1ST PERSON//     camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())   //FIRST PERSON
+    //ATTACH TO CHAR// camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)  //ATTACH TO CHAR//
 
     end
     
@@ -160,6 +161,8 @@ boolean endHandled = false
             StopCam()
         end
     end
+
+// *******  Encapsulated actions *****************
 
     action MoveForward() 
         velocityX = 0
@@ -225,5 +228,12 @@ boolean endHandled = false
 
 
 /////////////
+
+    // Creating cation for drawing center lnes
+    action SetCenterLine(Model object, number width, number height, number depth, number positionX, number positionY, number positionZ, Color color)       
+        object:LoadBox(width, height, depth, color)
+        object:SetPosition(positionX, positionY, positionZ)
+        Add(object)
+    end
 
 end
