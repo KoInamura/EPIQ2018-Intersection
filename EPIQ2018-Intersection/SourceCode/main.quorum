@@ -360,7 +360,10 @@ boolean endHandled = false
     
     
     action CamReturn
-        camera:LookAt(0, 0, 1000000)
+        camera:SetPosition(0, 65, -215)   
+        yaw = 0
+        pitch = 0
+        roll = 0
     end
 
 
