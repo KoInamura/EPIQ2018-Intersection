@@ -1,0 +1,24 @@
+use Libraries.Game.Graphics.Model
+use Libraries.Compute.Vector3
+class DirectionalModel is Model
+
+    Vector3 direction
+
+    on create
+        direction:Set(1, 0, 0)
+    end
+ 
+    action Rotate(number x, number y, number z, number degrees)
+        direction:Rotate(degrees, x, y, z)
+        parent:Model:Rotate(x, y, z, degrees)
+    end
+
+    action Rotate(Vector3 axis, number degrees)
+        direction:Rotate(axis, degrees)
+        parent:Model:Rotate(axis, degrees)
+    end
+
+    action GetDirection returns Vector3
+        return direction
+    end
+end

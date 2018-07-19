@@ -20,7 +20,25 @@ class Main is Game, KeyboardListener
 
     Model ground
 
-    Model diver 
+    DirectionalModel diver 
+
+    Model box1
+    Model box2
+    Model box3
+    Model box4
+    Model box5
+    Model box6
+    Model box7
+    Model box8
+
+    Audio3D soundCar1
+    Audio3D soundCar2
+    Audio3D soundCar3
+    Audio3D soundCar4
+    Audio3D soundCar5
+    Audio3D soundCar6
+    Audio3D soundCar7    
+    Audio3D soundCar8
 
     Drawable grass
     Drawable background
@@ -30,7 +48,8 @@ class Main is Game, KeyboardListener
     
 
     // The speed of the character when he moves
-    number speed = 30
+    number speed = 10
+    number carSpeed = 50
 
     // These are the values that we will use to move the character
     number velocityX = 0
@@ -53,9 +72,12 @@ boolean endHandled = false
 
    
     action CreateGame
-        
+
+        soundCar1:SetDefaultMaximumVolumeDistance(500)
+        soundCar1:SetDefaultRolloffRate(0.001)
+
         AmbientLight ambient
-        ambient:SetColor(0.3, 0.3, 0.3, 1)
+        ambient:SetColor(1, 1, 1, 1)
         SetAmbientLight(ambient)
 
         DirectionalLight light
@@ -70,12 +92,12 @@ boolean endHandled = false
         camera:LookAt(0, 2, 0) 
         camera:SetUp(0,1,0)
 
-        grass:Load("GrassField1.jpg")
-        ground:LoadBox(1000, 2, 1000, grass)
+        grass:Load("/Texture/GrassField1.jpg")
+        ground:LoadBox(1000.0, 2, 1000, grass)
         Add(ground)
         
-        diver:Load("man.g3db") // load the g3db model
-        diver:Scale(0.008, 0.008, 0.008)
+        diver:Load("Models/man.g3db") // load the g3db model
+        diver:Scale(0.02, 0.02, 0.02)
         diver:SetPosition(8, 4, -500)
         diver:Rotate(0, 1, 0, 90)
         Add(diver)
@@ -139,20 +161,31 @@ boolean endHandled = false
         Model cwE2
         SetLine(cwE2, 3, 4, 100, 99, 0, 0, color:White())
 
+        box1:LoadBox(10, 10, 15, color:Blue())
+        box1:SetPosition(-40, 5, 450)
+        Add(box1)
+
+        // Adding audio to the cars
+        AddAudioToBox(box1, soundCar1)
+
         // Add a keyboardListener to move the character
         AddKeyboardListener(me)
     end
 
     action Update(number seconds)
+    // Moving vehicle
+        box1:Move(0, 0, seconds * -carSpeed)
 
      // Moves the character every update depending on the values of the 3 fields
         diver:Move(velocityX*seconds, velocityY*seconds, velocityZ*seconds)
 
+    //Checking he position of the charcter in relation to the position of the car
+    CheckPosition(diver, box1, soundCar1)
+
     //Moves the camera 
         camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
-
-        
-
+        soundCar1:SetListenerPosition(diver:GetPosition())
+        soundCar1:SetListenerDirection(diver:GetDirection())
 
     // Moves the camera according to the character position
     //   camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
@@ -318,6 +351,29 @@ boolean endHandled = false
         object:LoadBox(width, height, depth, color)
         object:SetPosition(positionX, positionY, positionZ)
         Add(object)
+    end
+
+    action AddAudioToBox(Model box, Audio3D sound)
+        sound:LoadToStream("Sound/carSound.wav")
+        sound:SetVolume(1)
+        sound:Play()
+        sound:EnableLooping()
+        sound:SetMaximumVolumeDistance(2500)
+        sound:SetRolloffRate(0.00001)
+        box:Add(sound)
+    end
+
+    /* An action used to check if the character is near a box */
+    action CheckPosition(Model modelCharac, Model model, Audio3D sound)
+        sound:SetListenerPosition(modelCharac:GetPosition())
+        sound:SetListenerDirection(camera:GetDirection())
+            if modelCharac:GetPosition():GetX() < model:GetX() + 5 and modelCharac:GetPosition():GetX() > model:GetX() - 5
+            and modelCharac:GetPosition():GetZ() < model:GetZ() + 5 and modelCharac:GetPosition():GetZ() > model:GetZ() - 5
+                /* if the character is near a box we play the sound car */
+                sound:Stream()
+            else 
+
+            end  
     end
 
 end
