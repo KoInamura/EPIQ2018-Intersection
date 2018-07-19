@@ -49,6 +49,11 @@ class Main is Game, KeyboardListener
 
     // The speed of the character when he moves
     number speed = 10
+    
+    number yawSpeed = 0
+    number pitchSpeed = 0
+    number rollSpeed = 0
+    
     number carSpeed = 50
 
     // These are the values that we will use to move the character
@@ -60,6 +65,11 @@ class Main is Game, KeyboardListener
     number camvelX = 0
     number camvelY = 0
     number camvelZ = 0
+
+    //YawPitchRoll variables
+    number yaw = 0
+    number pitch = 0
+    number roll = 0
 
     //speed of camera
     number camspeed = 30
@@ -184,6 +194,13 @@ boolean endHandled = false
 
     //Moves the camera 
         camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
+
+        yaw = yaw + yawSpeed * seconds
+        pitch = pitch + pitchSpeed * seconds
+
+        //camera YawPitch
+        camera:SetYawPitchRoll(yaw, pitch, roll)
+
         soundCar1:SetListenerPosition(diver:GetPosition())
         soundCar1:SetListenerDirection(diver:GetDirection())
 
@@ -215,11 +232,14 @@ boolean endHandled = false
             MoveCamUp()
         elseif e:keyCode = e:E
             MoveCamDown()
-         elseif e:keyCode = e:NUM_1
-            RotaD()
-            //camera:Rotate(180, 0, 0, 1)
-        elseif e:keyCode = e:NUM_2
-            RotaU()
+         elseif e:keyCode = e:NUM_2
+            YawUp()
+        elseif e:keyCode = e:NUM_1
+            YawDown()
+        elseif e:keyCode = e:NUM_3
+            PitchRight()
+        elseif e:keyCode = e:NUM_4
+            PitchLeft()
         elseif e:keyCode = e:SPACE
             CamReturn()
         end
@@ -248,7 +268,14 @@ boolean endHandled = false
             StopCam()
         elseif e:keyCode = e:E
             StopCam()
-       
+        elseif e:keyCode = e:NUM_1
+            StopYaw()
+        elseif e:keyCode = e:NUM_2
+            StopYaw()
+        elseif e:keyCode = e:NUM_3
+            StopPitch()
+        elseif e:keyCode = e:NUM_4
+            StopPitch()
         end
     end
 
@@ -330,17 +357,49 @@ boolean endHandled = false
         camvelZ = -speed 
     end
 
-    action RotaD
-        camera:Rotate(180, 0, 0, 1)
-            
+    action YawUp
+        yawSpeed = speed
+        pitchSpeed = 0
+        rollSpeed = 0        
     end
 
-    action RotaU
-        camera:Rotate(-180, 0, 0, 1)
+    action YawDown
+        yawSpeed = -speed
+        pitchSpeed = 0
+        rollSpeed = 0
     end
+
+    action StopYaw
+        yawSpeed = 0
+        pitchSpeed = 0
+        rollSpeed = 0
+    end
+
+    action PitchRight
+        yawSpeed = 0
+        pitchSpeed = speed
+        rollSpeed = 0
+    end
+
+    action PitchLeft
+        yawSpeed = 0
+        pitchSpeed = -speed
+        rollSpeed = 0
+    end
+
+    action StopPitch
+        yawSpeed = 0
+        pitchSpeed = 0
+        rollSpeed = 0
+    end
+
+    
     
     action CamReturn
-        camera:LookAt(0, 0, 1000000)
+        camera:SetPosition(0, 65, -215)   
+        yaw = 0
+        pitch = 0
+        roll = 0
     end
 
 
