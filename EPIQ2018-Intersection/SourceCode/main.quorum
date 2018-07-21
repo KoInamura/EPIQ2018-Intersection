@@ -50,9 +50,14 @@ class Main is Game, KeyboardListener
     // The speed of the character when he moves
     number speed = 10
     
+    //speed of yaw and pitch actions
     number yawSpeed = 0
     number pitchSpeed = 0
     number rollSpeed = 0
+
+    //zoom objects 
+    number zoomSpeed = 0
+    number zoom = 1.0 
     
     number carSpeed = 50
 
@@ -73,6 +78,8 @@ class Main is Game, KeyboardListener
 
     //speed of camera
     number camspeed = 30
+
+    
 
 boolean endHandled = false
    
@@ -242,6 +249,15 @@ boolean endHandled = false
             PitchLeft()
         elseif e:keyCode = e:SPACE
             CamReturn()
+        elseif e:keyCode = e:NUM_5
+            zoom = zoom + 0.1
+            camera:SetZoom(zoom)
+        elseif e:keyCode = e:NUM_6
+            zoom = zoom - 0.1
+            camera:SetZoom(zoom)
+        elseif e:keyCode = e:P    
+            TurnYawOff()
+            
         end
         
         
@@ -400,7 +416,15 @@ boolean endHandled = false
         yaw = 0
         pitch = 0
         roll = 0
+        zoom = 1.0
+        camera:SetZoom(zoom)     //not resetting zoom to 0 
     end
+
+    action TurnYawOff
+        yaw = 0
+        pitch = 0
+        roll = 0
+    end 
 
 
 /////////////
