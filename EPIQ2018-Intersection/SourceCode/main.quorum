@@ -208,6 +208,7 @@ class Main is Game, KeyboardListener
     //Moves the camera 
         camera:Move(camvelX*seconds, camvelY*seconds, camvelZ*seconds)
 
+        
         yaw = yaw + yawSpeed * seconds
         pitch = pitch + pitchSpeed * seconds
 
@@ -227,7 +228,7 @@ class Main is Game, KeyboardListener
     //   camera:SetPosition(diver:GetPosition():GetX()-4,diver:GetPosition():GetY()+3,diver:GetPosition():GetZ())
     //1ST PERSON//     camera:SetPosition(diver:GetPosition():GetX()-5,diver:GetPosition():GetY(),diver:GetPosition():GetZ())   //FIRST PERSON
     //ATTACH TO CHAR// camera:SetPosition(diver:GetPosition():GetX(),diver:GetPosition():GetY()+5,diver:GetPosition():GetZ()-10)  //ATTACH TO CHAR//
-
+            
     end
     
     action PressedKey(KeyboardEvent e)
@@ -315,6 +316,8 @@ class Main is Game, KeyboardListener
             StopZoom()
         end
     end
+
+    
 
 // *******  Encapsulated actions *****************
 
