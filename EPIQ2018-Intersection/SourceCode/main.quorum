@@ -264,7 +264,7 @@ class Main is Game, KeyboardListener
         elseif e:keyCode = e:NUM_6
             zoom = zoom - 0.1
             camera:SetZoom(zoom)
-        elseif e:keyCode = e:P    
+        elseif e:keyCode = e:X    
             TurnYawOff()
         end
             
