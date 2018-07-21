@@ -72,7 +72,7 @@ class Main is Game, KeyboardListener
     number roll = 0
 
     //speed of camera
-    number camspeed = 30
+    number camSpeed = 100
 
 boolean endHandled = false
    
@@ -172,7 +172,7 @@ boolean endHandled = false
         SetLine(cwE2, 3, 4, 100, 99, 0, 0, color:White())
 
         box1:LoadBox(10, 10, 15, color:Blue())
-        box1:SetPosition(-40, 5, 450)
+        box1:SetPosition(-40, 5, 50)
         Add(box1)
 
         // Adding audio to the cars
@@ -183,8 +183,6 @@ boolean endHandled = false
     end
 
     action Update(number seconds)
-    // Moving vehicle
-        box1:Move(0, 0, seconds * -carSpeed)
 
      // Moves the character every update depending on the values of the 3 fields
         diver:Move(velocityX*seconds, velocityY*seconds, velocityZ*seconds)
@@ -201,6 +199,7 @@ boolean endHandled = false
         //camera YawPitch
         camera:SetYawPitchRoll(yaw, pitch, roll)
 
+        // Making the sound play according to the position of the diver
         soundCar1:SetListenerPosition(diver:GetPosition())
         soundCar1:SetListenerDirection(diver:GetDirection())
 
@@ -311,26 +310,24 @@ boolean endHandled = false
         velocityZ = -speed 
     end
 
-    
-
 ////////////Camera actions 
 
     action MoveCamUp()
         camvelX = 0
-        camvelY = speed
+        camvelY = camSpeed
         camvelZ = 0
     end
 
     action MoveCamDown()
         camvelX = 0
-        camvelY = -speed
+        camvelY = -camSpeed
         camvelZ = 0
     end
 
     action MoveCamForward() 
         camvelX = 0
         camvelY = 0
-        camvelZ = speed
+        camvelZ = camSpeed
     end
 
     action StopCam()
@@ -340,13 +337,13 @@ boolean endHandled = false
     end
 
     action MoveCamLeft
-        camvelX = -speed
+        camvelX = -camSpeed
         camvelY = 0
         camvelZ = 0 
     end 
 
     action MoveCamRight
-        camvelX = speed
+        camvelX = camSpeed
         camvelY = 0
         camvelZ = 0 
     end 
@@ -354,11 +351,11 @@ boolean endHandled = false
     action MoveCamBack
         camvelX = 0
         camvelY = 0
-        camvelZ = -speed 
+        camvelZ = -camSpeed 
     end
 
     action YawUp
-        yawSpeed = speed
+        yawSpeed = camSpeed
         pitchSpeed = 0
         rollSpeed = 0        
     end
@@ -393,15 +390,12 @@ boolean endHandled = false
         rollSpeed = 0
     end
 
-    
-    
     action CamReturn
         camera:SetPosition(0, 65, -215)   
         yaw = 0
         pitch = 0
         roll = 0
     end
-
 
 /////////////
 
@@ -433,6 +427,12 @@ boolean endHandled = false
             else 
 
             end  
+    end
+
+    action LoadBoxCar(Model object, number width, number height, number depth, Color color, number positionX, number positionY, number positionZ)
+        object:LoadBox(width, height, depth, color:Blue())
+        object:SetPosition(-positionX, positionY, positionY)
+        Add(object)
     end
 
 end
