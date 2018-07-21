@@ -80,13 +80,12 @@ class Main is Game, KeyboardListener
     //speed of camera
     number camSpeed = 100
 
-boolean endHandled = false
+    boolean endHandled = false
    
     action Main
         StartGame()
     end
 
-   
     action CreateGame
 
         soundCar1:SetDefaultMaximumVolumeDistance(500)
@@ -114,7 +113,7 @@ boolean endHandled = false
         
         diver:Load("Models/man.g3db") // load the g3db model
         diver:Scale(0.02, 0.02, 0.02)
-        diver:SetPosition(8, 4, -500)
+        diver:SetPosition(55, 4, -60)
         diver:Rotate(0, 1, 0, 90)
         Add(diver)
         
@@ -124,6 +123,7 @@ boolean endHandled = false
         pointLight:SetIntensity(20)
         diver:Add(pointLight)
         
+        // Placing the roads
         Model roadNS
         roadNS:LoadBox(100, 3, 1000, color:Gray())
         Add(roadNS)
@@ -132,6 +132,7 @@ boolean endHandled = false
         roadEW:LoadBox(1000, 3, 100, color:Gray())
         Add(roadEW)
 
+        // Placing the lines
         Model cLineNSS
         SetLine(cLineNSS, 3, 4, 400, 0, 0, -300, color:Yellow())
         Model cLineNSN
@@ -141,6 +142,7 @@ boolean endHandled = false
         Model cLineEWE
         SetLine(cLineEWE, 400, 4, 3, 300, 0, 0, color:Yellow())
 
+        // Palcing Sidewalk
         Model sidewalkSW1
         SetLine(sidewalkSW1, 10, 4, 450, -55, 0, -275, color:LightGray())
         Model sidewalkSE1
@@ -159,6 +161,7 @@ boolean endHandled = false
         Model sidewalkNE2
         SetLine(sidewalkNE2, 450, 4, 10, 275, 0, 55, color:LightGray())
 
+        // Placing Cross Walk
         Model cwS1
         SetLine(cwS1, 100, 4, 3, 0, 0, -99, color:White())
         Model cwS2
@@ -176,10 +179,16 @@ boolean endHandled = false
         SetLine(cwE1, 3, 4, 100, 51, 0, 0, color:White())
         Model cwE2
         SetLine(cwE2, 3, 4, 100, 99, 0, 0, color:White())
-
-        box1:LoadBox(10, 10, 15, color:Blue())
-        box1:SetPosition(-40, 5, 50)
-        Add(box1)
+        
+        // Setting the position of the cars
+        LoadBoxCar(box1, 10, 10, 15, color:Blue(), -40, 5, 115)
+        LoadBoxCar(box3, 10, 10, 15, color:Green(), -20, 5, 115)
+        LoadBoxCar(box5, 10, 10, 15, color:Black(), 20, 5, -115)
+        LoadBoxCar(box7, 10, 10, 15, color:Pink(), 40, 5, -115)
+        LoadBoxCar(box2, 15, 10, 10, color:Purple(), -115, 5, -40)
+        LoadBoxCar(box4, 15, 10, 10, color:Yellow(), -115, 5, -20)
+        LoadBoxCar(box6, 15, 10, 10, color:Cyan(), 115, 5, 20)
+        LoadBoxCar(box8, 15, 10, 10, color:Maroon(), 115, 5, 40)
 
         // Adding audio to the cars
         AddAudioToBox(box1, soundCar1)
@@ -457,8 +466,8 @@ boolean endHandled = false
     end
 
     action LoadBoxCar(Model object, number width, number height, number depth, Color color, number positionX, number positionY, number positionZ)
-        object:LoadBox(width, height, depth, color:Blue())
-        object:SetPosition(-positionX, positionY, positionY)
+        object:LoadBox(width, height, depth, color)
+        object:SetPosition(positionX, positionY, positionZ)
         Add(object)
     end
 
