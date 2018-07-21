@@ -56,9 +56,10 @@ class Main is Game, KeyboardListener
     number rollSpeed = 0
 
     //zoom objects 
-    number zoomSpeed = 0
+    number zoomSpeed = camSpeed
     number zoom = 1.0 
     
+
     number carSpeed = 50
 
     // These are the values that we will use to move the character
@@ -204,6 +205,8 @@ boolean endHandled = false
         //camera YawPitch
         camera:SetYawPitchRoll(yaw, pitch, roll)
 
+       
+
         // Making the sound play according to the position of the diver
         soundCar1:SetListenerPosition(diver:GetPosition())
         soundCar1:SetListenerDirection(diver:GetDirection())
@@ -254,8 +257,9 @@ boolean endHandled = false
             camera:SetZoom(zoom)
         elseif e:keyCode = e:P    
             TurnYawOff()
-            
         end
+            
+        
         
         
     end
@@ -289,7 +293,7 @@ boolean endHandled = false
             StopPitch()
         elseif e:keyCode = e:NUM_4
             StopPitch()
-        end
+       end
     end
 
 // *******  Encapsulated actions *****************
@@ -419,7 +423,7 @@ boolean endHandled = false
         roll = 0
     end 
 
-
+    
 /////////////
 
     // Creating cation for drawing center lnes
