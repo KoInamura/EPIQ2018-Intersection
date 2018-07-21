@@ -56,8 +56,8 @@ class Main is Game, KeyboardListener
     number rollSpeed = 0
 
     //zoom objects 
-    number zoomSpeed = camSpeed
-    number zoom = 1.0 
+    number zoomSpeed = 0        //camSpeed?
+    number zoom = 1      //1?
     
 
     number carSpeed = 50
@@ -213,8 +213,11 @@ class Main is Game, KeyboardListener
 
         //camera YawPitch
         camera:SetYawPitchRoll(yaw, pitch, roll)
+        
 
-       
+        zoom = zoom + zoomSpeed * seconds * 0.01
+        camera:SetZoom(zoom)
+
 
         // Making the sound play according to the position of the diver
         soundCar1:SetListenerPosition(diver:GetPosition())
@@ -258,14 +261,18 @@ class Main is Game, KeyboardListener
             PitchLeft()
         elseif e:keyCode = e:SPACE
             CamReturn()
-        elseif e:keyCode = e:NUM_5
-            zoom = zoom + 0.1
-            camera:SetZoom(zoom)
+        elseif e:keyCode = e:NUM_5 
+            ZoomIn()
+//            zoom = zoom + 0.1
+//            camera:SetZoom(zoom)
         elseif e:keyCode = e:NUM_6
-            zoom = zoom - 0.1
-            camera:SetZoom(zoom)
+            ZoomOut()
+//            zoom = zoom - 0.1
+//            camera:SetZoom(zoom)
         elseif e:keyCode = e:X    
             TurnYawOff()
+        elseif e:keyCode = e:Z
+            ResetZoom()
         end
             
         
@@ -302,7 +309,11 @@ class Main is Game, KeyboardListener
             StopPitch()
         elseif e:keyCode = e:NUM_4
             StopPitch()
-       end
+        elseif e:keyCode = e:NUM_5
+            StopZoom()
+        elseif e:keyCode = e:NUM_6
+            StopZoom()
+        end
     end
 
 // *******  Encapsulated actions *****************
@@ -431,6 +442,22 @@ class Main is Game, KeyboardListener
         pitch = 0
         roll = 0
     end 
+
+    action ZoomIn
+       zoomSpeed = camSpeed   //1?
+    end
+
+    action ZoomOut
+        zoomSpeed = -camSpeed        //-1
+    end
+
+    action StopZoom
+        zoomSpeed = 0
+    end
+    
+    action ResetZoom
+        zoom = 1
+    end
 
     
 /////////////
